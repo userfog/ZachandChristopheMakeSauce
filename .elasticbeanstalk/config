@@ -1,0 +1,13 @@
+[global]
+ApplicationName=zachandchristophemakesauce
+AwsCredentialFile=C:\Users\Zachary\.elasticbeanstalk\aws_credential_file
+DevToolsEndpoint=git.elasticbeanstalk.us-east-1.amazonaws.com
+EnvironmentName=zachandchristophemakesa
+EnvironmentType=SingleInstance
+InstanceProfileName=aws-elasticbeanstalk-ec2-role
+OptionSettingFile=C:\Users\Zachary\Documents\GitHub\zachandchristophemakesauce\.elasticbeanstalk\optionsettings.zachandchristophemakesa
+RdsEnabled=No
+Region=us-east-1
+ServiceEndpoint=https://elasticbeanstalk.us-east-1.amazonaws.com
+SolutionStack=32bit Amazon Linux 2013.09 running Python 2.7
+
