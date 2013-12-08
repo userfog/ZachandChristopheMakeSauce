@@ -5,12 +5,12 @@ import re
 from collections import OrderedDict
 import numpy as np
 from matplotlib.pyplot import *
-
+import matplotlib.pyplot as plt
 # from sklearn import linear_model
 
 pp = pprint.PrettyPrinter(indent=4)
 
-path_to_dir = "/Users/zachfogelson/Downloads/scraps/zandc/ZachandChristopheMakeSauce/Christophe/2/Xanthan/"
+path_to_dir = "/home/j33/zandc/ZachandChristopheMakeSauce/Christophe/2/Xanthan/"
 
 # temp = []
 # concentration = []
@@ -56,19 +56,43 @@ for fn in os.listdir('./Christophe/2/Xanthan/'):
         raise Exception("Hello")
 
 # pp.pprint(table_dict)
+new_dict = {}
 
 for el in table_dict :
-    var_x, var_y = np.array(zip(*table_dict[el]))
-    n = np.max(var_x.shape)
-    X = np.vstack([np.ones(n), var_x]).T
-    for x in var_x :
-      for y in var_y :
-        plot(x, y, 'o', label='Original data', markersize=10)
-        xlabel('x values')
-        ylabel('y values')
-        xlim([0, 1])
-        ylim([-1, 1])
-        legend(loc=0)
+    x, y = np.array(zip(*table_dict[el]))
+    n = np.max(x.shape)
+    X = np.vstack([np.ones(len(x)), x]).T
+    m, c = np.linalg.lstsq(X, y)[0]
+    updater = {el : {"Slope" : m, "Const": c}}
+    new_dict.update(updater)
+    pp.pprint(new_dict)
+    # Plot the data along with the fitted line:
+    plt.plot(x, y, 'o', label='Original data', markersize=10)
+    plt.plot(x, m*x + c, 'r', label='Fitted line')
+    plt.legend()
+    plt.show()
+    break
+    # plot.show()
+    # plot(x, np.dot(X,a), 'r', label='Fitted line')
+    # xlabel('x values')
+    # ylabel('y values')
+    # title('Linear regression of y on x')
+    # grid('on')
+    # xlim([0.9, 5.1])
+    # ylim([1.9, 5.1])
+    # legend(loc=0)
+    # for x in var_x :
+    #   for y in var_y :
+    #     pp.pprint(x)  
+    #     n = np.max(var_x.shape)
+    #     X = np.vstack([np.ones(n), var_x]).T    
+
+        # plot(x, y, 'o', label='Original data', markersize=10)
+        # xlabel('x values')
+        # ylabel('y values')
+        # xlim([0, 1])
+        # ylim([-1, 1])
+        # legend(loc=0)
     # a = np.linalg.lstsq(X, y)[0]
     # pp.pprint(a)
 
