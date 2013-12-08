@@ -1,5 +1,6 @@
 [global]
 ApplicationName=zachandchristophemakesauce
+ApplicationVersionName=git-509f3c64d5757b10c808116fdd22468fcdd1478f-1386458872998
 AwsCredentialFile=C:\Users\Zachary\.elasticbeanstalk\aws_credential_file
 DevToolsEndpoint=git.elasticbeanstalk.us-east-1.amazonaws.com
 EnvironmentName=zachandchristophemakesa
