@@ -10000,21 +10000,19 @@ color: 'rgba(213,213,213,.5)',
   <script type="text/javascript">
   function run() {
       var m_t = $("#m_thickener").val().toLowerCase();
-     
-      var s_v = $("#d_visco").val().toLowerCase();
-      var d_t = $("#s_temp").val().toLowerCase();
-      alert("Thickener: " + m_t + ", Visco: " + s_v.toString() + ", Temp: " + d_t.toString() + "\n")
+      var s_v = $("#d_visco").val();
+      var d_t = $("#s_temp").val();
       if(m_t != "agar" && m_t != "guar" && m_t != "xanthan"){
-        $("#output").css("color", "red")
+        $("#output").css("color", "red");
         $("#output").text("Please input Agar, Guar, or Xanthan");
         return;
       };
       if (d_t > 60.0 || d_t < 14.8) {
-        $("#output").css("color", "red")
+        $("#output").css("color", "red");
         $("#output").text("Range of Temperature: 14.9 - 60 Celcius");
         return;
       };
-      $("#output").css("color", "black")
+      $("#output").css("color", "black");
       $("#output").text("");
       var dicts = {
         "agar" : {14.8: {Const: 0.1392295452679442, Slope: 2.3971446704880428},
@@ -11352,12 +11350,13 @@ color: 'rgba(213,213,213,.5)',
    59.9: {Const: 0.10842518617749093, Slope: 3.2060210466562253},
    60.0: {Const: 0.15016677577483833, Slope: 2.7865238885897958}}};
    var key = Math.round(d_t*10)/10
-
-   alert("Key: " + key.toString() + ", Const: " + dicts[m_t][key]["Const"].toString() + ", Slope: "  + dicts[m_t][key]["Slope"].toString() + ", Visco: " + s_v.toString())
-
-   var desired_concentration = dicts[m_t][key]["Const"] + (dicts[m_t][key]["Slope"]*s_v) ;
-   // $("#output").text("");
-   $("#output").text(desired_concentration.toString());
+   var volume = $("#s_vol").val();
+   var slo  = dicts[m_t][key]["Slope"];
+   var inter = dicts[m_t][key]["Const"];
+   var desired = volume*(inter + (slo*s_v));
+   var reso = "<b>Volume Of Thickener: </b>" + desired.toString() +"(units volume)" + " =  </br>" + volume.toString() + "(units volume) * (" + inter.toString() + " + " + slo.toString() + "(1/Pa.s)" + "*" +  s_v.toString() + "(Pa.s)" + ")";
+   $("#output").html(reso);
+   $("#output").css("font-size", "25px")
 
 
    var plot_dicts = {
@@ -20610,54 +20609,103 @@ color: 'rgba(213,213,213,.5)',
                 }
             },
           series: 
-            [{name: _name,
-            color: 'rgba(18,36,40,.5)',
-              data: _real_data},
-            {type: "line", 
-              marker: {enabled = false}}]
+            [{
+              name: _name,
+              color: 'rgba(18,36,40,.5)',
+              data: _real_data}, 
+              {
+                name: 'Regression',
+                type: "line", 
+                data: (function () {
+                    // generate an array of random data
+                    var data = [],i;
+                    for (i = 0; i < s_v; i = i + .01) {
+                        if (i + .01 > s_v) {
+                          i = s_v
+                        };
+                        data.push({
+                            x: i,
+                            y: slo * i + inter
+                        });
+                    };
+                    return data;
+                })()
+            }]
       });
   }
   </script>
 </head>
-<body>
+<body style="font-size: 20px">
     <script src="static/script/lib/charts/highcharts.js"></script>
     <script src="static/script/lib/charts/modules/exporting.js"></script>
     <div class="navbar navbar-fixed-top">
       <ul class="nav nav-pills">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="#">Abstract</a></li>
+        <li class="active"><a href="#motivation">Motivation</a></li>
+        <li class="active"><a href="#method">Method</a></li>
         <li class="active"><a href="#agar">Agar</a></li>
         <li class="active"><a href="#guar">Guar</a></li>
         <li class="active"><a href="#xanthan">Xanthan</a></li>
+        <li class="active"><a href="#equation">Analysis</a></li>
+        <li class="active"><a href="#further_direction">Further Direction</a></li>
+        <li class="active"><a href="#conclusion">Conclusion</a></li>
       </ul>
     </div>
-    <h1 style="margin-top: 50px">Section 1</h1>
-    <p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?""Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</p>
-    <divid="agar">
-      <h1 >Agar</h1>
+    <div id="abstract">
+      <h1 style="margin-top: 50px">Abstract</h1>
+      <p>Modernist thickeners are increasingly being used in the kitchens. We investigated the correlation between thickener concentration, temperature and viscosity of the most versatile and used thickeners - Xanthan Gum, Agar and Guar. We accumulated a lot of data, and then ran regressions to derive formulae that allowed us to make a website that tells you how much thickener to use for specified parameters - viscosity desired and temperature.</p>
+      <p>We would like to thanks Emily Redston, Sami Farhi, Helen Wu, Zach Gault, Pia Sorensen, Mary Wahl and Nathan Myrvold for their help and contribution to this project. </p>
+    </div>
+    <div id="motivation">
+      <h1>Motivation of Project</h1>
+      <p>We cook, and love sauces. However, we do not like that traditional thickeners tend to require starches and fats, which are very calorie abundant and also alter the taste of the dish. We wanted to create a functional tool that would allow any chef to know exactly how much thickener to put. This is important given the potency of the thickers, as the range tends to be 0.05% - 2%. The specific motivation behind this was to thicken a red wine sauce. </p>
+    </div>
+    <div id="method">
+      <h1>Method</h1>
+      <p>Range of concentrations used was taken from Nathan Myrvold’s chart on modernist thickeners. A scale to 3dp was used to measure samples at 0.05% increments. This was measure for sauce of 50ml. The samples were added to 50ml of beef broth, and then immersion blended until no more clumps. For agar, the broth was heated to 95 degrees before the addition of the thickener (it hydrates at 95 degrees). The resulting sauce was then topped up to 50ml, placed in a fridge to gel and then blended to become a sauce. Each sample was then tested in a temperature ramping rheometer with a 1 degree or 4 degree head with temperature ramp from 15 degrees to 60 degrees. Each test run took about 8 minutes. </p>
+    </div>
+    <div id="data">
+      <h1>Data</h1>
+      <div id="agar" style="margin-left: 20px">
+      <h2>Agar</h2>
       <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      </div>
+      <div id="guar" style="margin-left: 20px">
+        <h2>Guar</h2>
+        <div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      </div>
+      <div id="xanthan" style="margin-left: 20px">
+        <h2>Xanthan</h2>
+        <div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      </div>
     </div>
-    <div id="guar">
-      <h1>Guar</h1>
-      <div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div id="analysis">
+      <h1>Analysis</h1>
+      <div id="equation">
+        <h2 style="margin-left: 20px">Find The Amount of Sauce you Need</h2>
+          <p style="margin-left: 20px">Find Concentration of Modernist Thickener Needed For your Dish</p>
+          <p  style="margin-left: 20px">For reference: Water is between 1 * 10^(-3) and .4 * 10^(-3), Maple Syrup is between .15 and .2 Pa.s, and finally  Peanut butter is between 1000 and 2000 Pa.s </p>
+          <label style="margin-left: 20px">Modernist Thickener:</label> <input type="text" id="m_thickener" ></input>
+          <label style="margin-left: 20px">Desired Viscosity:</label><input type="number" id="d_visco" ></input>
+          <label style="margin-left: 20px">Serving Temperature:</label><input type="number" id="s_temp" ></input>
+          <label style="margin-left: 20px">Sauce Volume: </label><input type="number" id="s_vol" ></input>
+          <br></br>
+          <button type="button" style="margin-left: 20px" onclick="run();">Generate Concentration</button>
+          <br></br>
+          <label style="margin-left: 20px">Output:</label>
+          <br></br>
+          <p style="margin-left: 20px; " id="output"><p>
+          <div style="margin-left: 20px" id="container4"></div>
+      </div>
     </div>
-    <div id="xanthan">
-      <h1>Xanthan</h1>
-      <div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div id="further_direction">
+      <h1>Further Direction</h1>
+      <p>Some areas to highlight. Since we measured the thickener in mass, and then added it to 50ml or 50g of beef broth, the resulting solution is greater than 50g. However, this difference is negligible as it is such a small percentage difference. Moreover, we would have liked to be able to measure temperatures above 60 degrees, but that was not possible within our timeframe.</p>
+      <p>Another limitation is that we used beef broth as representation for sauce. While this would work for red wine reductions, gravies and jus, it might not apply to non-water based sauces such as emulsions. This is simply the start. The dream would be for this to be a crowd-sourced database that would grow to incorporate more types of sauces. </p>
     </div>
-    <div id="equation">
-      <h1>Equation</h1>
-        <p style="margin-left: 20px">Find Concentration of Modernist Thickener Needed For your Dish</p>
-        <label style="margin-left: 20px">Modernist Thickener:</label> <input type="text" id="m_thickener" ></input>
-        <label style="margin-left: 20px">Desired Viscosity:</label><input type="number" id="d_visco" ></input>
-        <label style="margin-left: 20px">Serving Temperature:</label><input type="number" id="s_temp" ></input>
-        <br></br>
-        <button type="button" style="margin-left: 20px" onclick="run();">Generate Concentration</button>
-        <br></br>
-        <label style="margin-left: 20px">Output:</label>
-        <br></br>
-        <p style="margin-left: 20px" id="output"><p>
-        <div style="margin-left: 20px" id="container4"></div>
+    <div id="conclusion">
+      <h1>Conclusion</h1>
+      <p>We have succeeded a creating a tool that will be useful for us while cooking. Some areas for further work would of course we broadening this to other thickeners. We have covered the most important and versatile ones, but there are niche uses for the others and this function would be useful for some chefs.</p>
     </div>
 </body>
 </html>
