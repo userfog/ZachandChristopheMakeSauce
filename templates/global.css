@@ -32,3 +32,11 @@
   color: #444;
   background: #fcfcfc;
 }
+.carousel .item>img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 25%;
+  max-width: 75%
+  height: 250px;
+}
