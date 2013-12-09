@@ -55,71 +55,25 @@ for fn in os.listdir('./Christophe/2/Xanthan/'):
       except Exception, e:
         raise Exception("Hello")
 
-# pp.pprint(table_dict)
-new_dict = {}
+# # pp.pprint(table_dict)
+# new_dict = {}
 
-for el in table_dict :
-    x, y = np.array(zip(*table_dict[el]))
-    n = np.max(x.shape)
-    X = np.vstack([np.ones(len(x)), x]).T
-    m, c = np.linalg.lstsq(X, y)[0]
-    updater = {el : {"Slope" : m, "Const": c}}
-    new_dict.update(updater)
-    pp.pprint(new_dict)
+# for el in table_dict :
+#   y, x = np.array(zip(*table_dict[el]))
+#   n = np.max(x.shape)
+#   X = np.vstack([np.ones(len(x)), x]).T
+#   c, m = np.linalg.lstsq(X, y)[0]
+#   updater = {el : {"Slope" : m, "Const": c}}
+#   new_dict.update(updater)
     # Plot the data along with the fitted line:
-    plt.plot(x, y, 'o', label='Original data', markersize=10)
-    plt.plot(x, m*x + c, 'r', label='Fitted line')
-    plt.legend()
-    plt.show()
-    break
-    # plot.show()
-    # plot(x, np.dot(X,a), 'r', label='Fitted line')
-    # xlabel('x values')
-    # ylabel('y values')
-    # title('Linear regression of y on x')
-    # grid('on')
-    # xlim([0.9, 5.1])
-    # ylim([1.9, 5.1])
-    # legend(loc=0)
-    # for x in var_x :
-    #   for y in var_y :
-    #     pp.pprint(x)  
-    #     n = np.max(var_x.shape)
-    #     X = np.vstack([np.ones(n), var_x]).T    
-
-        # plot(x, y, 'o', label='Original data', markersize=10)
-        # xlabel('x values')
-        # ylabel('y values')
-        # xlim([0, 1])
-        # ylim([-1, 1])
-        # legend(loc=0)
-    # a = np.linalg.lstsq(X, y)[0]
-    # pp.pprint(a)
-
-
-
-
-# t = len(temp)
-# c = len(concentration)
-# v = len(viscosity)
-# print("Abc : " + str(abc) + "Expected : " + str(t - v))
-# print("Temp :" + str(t))
-# print("Con :" + str(c))
-# print("Visc :" + str(v))
-# x_temp = np.array(temp)
-# x_concentration = np.array(concentration)
-# y_viscosity = np.array(viscosity)
-# nvar = 2
-# one = np.ones(x_temp.shape)
-# A = np.vstack((x_temp,one,x_concentration,one)).T.reshape(nvar,x_temp.shape[0],2)
-# plt.plot(A, y_viscosity, 'o', label='Original data', markersize=10)
-# plt.legend()
-# plt.show()
-# with open("out", "w+") as out:
-#   pprint.pprint(A, out)
-# for i,Ai in enumerate(A):
-#   l = np.linalg.lstsq(Ai,y_viscosity)
-#   # pp.pprint(l)
-#   a = l[0]
-#   print a
-
+    # plt.plot(x, y, 'o', label='Original data', markersize=7)
+    # plt.plot(x, m*x + c, 'r', label=(("%.3f" % m) + "*x + " + ("%.3f" % c)))
+    # plt.grid("on")
+    # plt.xlabel("Viscosity (Pa.s)")
+    # plt.ylabel("Concentration (% Volume)")
+    # plt.title("Guar: Linear Regression Concentration on Viscosity at " + str(el) + "c")
+    # plt.legend(loc=0)
+    # plt.show()
+    # break
+with open("./Christophe/3/Xanthan/Xanthan_plots.out", "w+") as plots:
+  pprint.pprint(table_dict, plots)
